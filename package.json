@@ -23,5 +23,8 @@
   "bugs": {
     "url": "https://github.com/alexsophiekim/thread-back-end/issues"
   },
-  "homepage": "https://github.com/alexsophiekim/thread-back-end#readme"
+  "homepage": "https://github.com/alexsophiekim/thread-back-end#readme",
+  "dependencies": {
+    "nodemon": "^1.19.2"
+  }
 }
