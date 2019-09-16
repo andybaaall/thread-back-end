@@ -1,0 +1,27 @@
+{
+  "name": "thread-back-end",
+  "version": "1.0.0",
+  "description": "Summative 3.0 group project by John, Andy, Matt and Sophie.",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alexsophiekim/thread-back-end.git"
+  },
+  "keywords": [
+    "javascript",
+    "mongoDB",
+    "jQuery",
+    "node.js",
+    "Grunt",
+    "npm"
+  ],
+  "author": "John, Andy, Matt and Sophie",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/alexsophiekim/thread-back-end/issues"
+  },
+  "homepage": "https://github.com/alexsophiekim/thread-back-end#readme"
+}
