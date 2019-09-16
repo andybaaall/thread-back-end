@@ -25,6 +25,7 @@
   },
   "homepage": "https://github.com/alexsophiekim/thread-back-end#readme",
   "dependencies": {
+    "express": "^4.17.1",
     "nodemon": "^1.19.2"
   }
 }
