@@ -56,19 +56,5 @@ app.post('/users',function(req,res){
 })
 
 app.get('/getUser', function(req,res){
-  const username = req.body.username;
-  const password = req.body.password;
-  User.findOne({ username: username}, function(err, checkUser){
-    if (checkUser) {
-        if (bcrypt.compareSync(req.body.password,checkUser.password)) {
-          console.log('password matched');
-          res.send(checkUser)
-        } else {
-          console.log('password does not matched');
-          res.send('Invalid password');
-        }
-    } else {
-      res.send('Invalid user')
-    }
-  })
+    res.send('this is the login process');
 })
