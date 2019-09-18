@@ -37,14 +37,21 @@ app.get('/', function(req, res){
 });
 
 app.post('/users',function(req,res){
-  const hash = bcrypt.hashSync(req.body.password);
-  const user = new User({
-    _id: new mongoose.Types.ObjectId(),
-    username: req.body.username,
-    email: req.body.email,
-    password: hash
-  });
-  user.save().then(result => {
-    res.send(result)
-  }).catch(err => res.send(err))
+  User.findOne({username:req.body.username}, function(err,result){
+    if (result) {
+      res.send('Invalid user');
+    } else {
+      const hash = bcrypt.hashSync(req.body.password);
+      const user = new User({
+        _id: new mongoose.Types.ObjectId(),
+        username: req.body.username,
+        email: req.body.email,
+        password: hash
+      });
+      user.save().then(result => {
+        res.send(result)
+      }).catch(err => res.send(err))
+    }
+  })
+
 })
