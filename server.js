@@ -8,14 +8,12 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 //BCRYPT WILL NEED FURTHER SET UP WHEN WE START TO DO USER LOGIN
 const bcrypt = require('bcryptjs');
-const mongoose = require('mongoose');
 const multer = require('multer');
 
 const User = require('./models/users');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:false}));
-app.use(cors())
 
 app.listen(port, () => {
     console.clear();
