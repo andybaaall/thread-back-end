@@ -1,15 +1,15 @@
 const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
-
-const port = 3000;
-const config = require('./config.json');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 //BCRYPT WILL NEED FURTHER SET UP WHEN WE START TO DO USER LOGIN
 const bcrypt = require('bcryptjs');
-const mongoose = require('mongoose');
 const multer = require('multer');
+
+const port = 3000;
+const config = require('./config.json');
+
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:false}));
