@@ -47,4 +47,24 @@ app.post('/users',function(req,res){
   user.save().then(result => {
     res.send(result)
   }).catch(err => res.send(err))
-})
+});
+
+// Update user details (username, email, password) based on id
+app.patch('/users/:id', function(req, res){
+    const id = req.params.id;
+    const hash = bcrypt.hashSync(req.body.password);
+    User.findById(id, function(err, user){
+        if(user['user_id'] == req.body.userId){
+            const newUser = {
+                username: req.body.username,
+                email: req.body.email,
+                password: hash
+            };
+            User.updateOne({ _id: id}, newUser).then(result => {
+                res.send(result);
+            }).catch(err => res.send(err));
+        } else {
+            res.send('401');
+        }
+    }).catch(err => res.send('Sorry, cannot find user with that id'));
+});
