@@ -83,6 +83,7 @@ app.patch('/users/:id', function(req, res){
             res.send('401');
         }
     }).catch(err => res.send('Sorry, cannot find user with that id'));
+});
 
 app.listen(port, () => {
     console.log(`application is running on port ${port}`)
