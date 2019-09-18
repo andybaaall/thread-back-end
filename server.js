@@ -10,6 +10,10 @@ const multer = require('multer');
 const port = 3000;
 const config = require('./config.json');
 
+const User = require ('./models/user.js');
+const Item = require ('./models/item.js');
+const Comment = require ('./models/comment.js');
+
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:false}));
