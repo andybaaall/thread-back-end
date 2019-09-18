@@ -5,7 +5,6 @@ const port = 3000;
 const config = require('./config.json');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-//BCRYPT WILL NEED FURTHER SET UP WHEN WE START TO DO USER LOGIN
 const bcrypt = require('bcryptjs');
 const multer = require('multer');
 
@@ -14,10 +13,6 @@ const User = require('./models/users');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:false}));
 app.use(cors());
-app.listen(port, () => {
-    console.clear();
-    console.log(`application is running on port ${port}`)
-});
 
 mongoose.connect(`mongodb+srv://${config.MONGO_USER}:${config.MONGO_PASSWORD}@${config.MONGO_CLUSTER_NAME}.mongodb.net/summative3?retryWrites=true&w=majority`, {useNewUrlParser: true, useUnifiedTopology: true});
 
@@ -55,3 +50,21 @@ app.post('/users',function(req,res){
   })
 
 })
+
+app.post('/getUser', function(req,res){
+    User.findOne({username: req.body.username}, function(err, getUser){
+        if(getUser){
+             if(bcrypt.compareSync(req.body.password, getUser.password)){
+                 res.send(getUser);
+             } else {
+                 console.log('incorrect password');
+             }
+        } else {
+            res.send('user does not exist')
+        }
+    })
+});
+
+app.listen(port, () => {
+    console.log(`application is running on port ${port}`)
+});
