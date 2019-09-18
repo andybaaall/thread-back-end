@@ -13,7 +13,7 @@ const User = require('./models/users');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:false}));
-
+app.use(cors());
 app.listen(port, () => {
     console.clear();
     console.log(`application is running on port ${port}`)
@@ -37,6 +37,7 @@ app.get('/', function(req, res){
 });
 
 app.post('/users',function(req,res){
+<<<<<<< HEAD
   User.findOne({ username:req.body.username}, function(err, result){
     if (result) {
         res.send('Sorry, this is already existed');
@@ -57,4 +58,16 @@ app.post('/users',function(req,res){
 
 app.get('/getUser', function(req,res){
     res.send('this is the login process');
+=======
+  const hash = bcrypt.hashSync(req.body.password);
+  const user = new User({
+    _id: new mongoose.Types.ObjectId(),
+    username: req.body.username,
+    email: req.body.email,
+    password: hash
+  });
+  user.save().then(result => {
+    res.send(result)
+  }).catch(err => res.send(err))
+>>>>>>> master
 })
