@@ -11,3 +11,5 @@ const Schema = mongoose.Schema;
     user_id: String,
     bought: Boolean
   });
+
+  module.exports = mongoose.model('Items', userSchema);
