@@ -13,10 +13,6 @@ const User = require('./models/users');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:false}));
 app.use(cors());
-app.listen(port, () => {
-    console.clear();
-    console.log(`application is running on port ${port}`)
-});
 
 mongoose.connect(`mongodb+srv://${config.MONGO_USER}:${config.MONGO_PASSWORD}@${config.MONGO_CLUSTER_NAME}.mongodb.net/summative3?retryWrites=true&w=majority`, {useNewUrlParser: true, useUnifiedTopology: true});
 
@@ -60,4 +56,8 @@ app.post('/getUser', function(req,res){
             res.send('user does not exist')
         }
     })
+});
+
+app.listen(port, () => {
+    console.log(`application is running on port ${port}`)
 });
