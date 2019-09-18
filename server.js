@@ -5,7 +5,6 @@ const port = 3000;
 const config = require('./config.json');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-//BCRYPT WILL NEED FURTHER SET UP WHEN WE START TO DO USER LOGIN
 const bcrypt = require('bcryptjs');
 const multer = require('multer');
 
@@ -37,28 +36,6 @@ app.get('/', function(req, res){
 });
 
 app.post('/users',function(req,res){
-<<<<<<< HEAD
-  User.findOne({ username:req.body.username}, function(err, result){
-    if (result) {
-        res.send('Sorry, this is already existed');
-    } else {
-      const hash = bcrypt.hashSync(req.body.password);
-      const user = new User({
-        _id: new mongoose.Types.ObjectId(),
-        username: req.body.username,
-        email: req.body.email,
-        password: hash
-      });
-      user.save().then(result => {
-        res.send(result)
-      }).catch(err => res.send(err))
-    }
-  })
-})
-
-app.get('/getUser', function(req,res){
-    res.send('this is the login process');
-=======
   const hash = bcrypt.hashSync(req.body.password);
   const user = new User({
     _id: new mongoose.Types.ObjectId(),
@@ -69,5 +46,18 @@ app.get('/getUser', function(req,res){
   user.save().then(result => {
     res.send(result)
   }).catch(err => res.send(err))
->>>>>>> master
 })
+
+app.post('/getUser', function(req,res){
+    User.findOne({username: req.body.username}, function(err, getUser){
+        if(getUser){
+             if(bcrypt.compareSync(req.body.password, getUser.password)){
+                 res.send(getUser);
+             } else {
+                 console.log('incorrect password');
+             }
+        } else {
+            res.send('user does not exist')
+        }
+    })
+});
