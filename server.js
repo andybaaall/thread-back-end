@@ -70,6 +70,7 @@ app.patch('/users/:id', function(req, res){
     const id = req.params.id;
     const hash = bcrypt.hashSync(req.body.password);
     User.findById(id, function(err, user){
+        // CHECK THE LINE BELOW: is "userId" ok?
         if(user['user_id'] == req.body.userId){
             const newUser = {
                 username: req.body.username,
