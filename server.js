@@ -31,21 +31,21 @@ app.use(function(req, res, next){
 app.get('/', function(req, res){
     res.send('Welcome to our Products API. Use endpoints to filter out the data');
 });
-//
-// app.post('/items', function(req,res){
-//   console.log('working');
-//     const item = new Item({
-//       _id: new mongoose.Types.ObjectId(),
-//       item_name: req.body.itemName,
-//       clothing_type: req.body.clothingType,
-//       image_URL: String,
-//       price: req.body.price,
-//       condition: req.body.condition
-//     });
-//     item.save().then(result=>{
-//       res.send(result)
-//     }).catch(err => res.send(err))
-// });
+
+app.post('/items', function(req,res){
+  console.log('working');
+    const item = new Item({
+      _id: new mongoose.Types.ObjectId(),
+      item_name: req.body.itemName,
+      clothing_type: req.body.clothingType,
+      image_URL: String,
+      price: req.body.price,
+      condition: req.body.condition
+    });
+    item.save().then(result=>{
+      res.send(result)
+    }).catch(err => res.send(err))
+});
 
 app.post('/users',function(req,res){
   User.findOne({username:req.body.username}, function(err,result){
