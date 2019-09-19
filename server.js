@@ -60,11 +60,17 @@ app.post('/users',function(req,res){
         password: hash
       });
       user.save().then(result => {
-        res.send(result)
-      }).catch(err => res.send(err))
+        res.send(result);
+      }).catch(err => res.send(err));
     }
+<<<<<<< HEAD
   })
 })
+=======
+  });
+
+});
+>>>>>>> ca9ae270743909f17cd9dba0f69d8f6242374d2c
 
 app.post('/getUser', function(req,res){
     User.findOne({username: req.body.username}, function(err, getUser){
@@ -75,9 +81,9 @@ app.post('/getUser', function(req,res){
                  console.log('incorrect password');
              }
         } else {
-            res.send('user does not exist')
+            res.send('user does not exist');
         }
-    })
+    });
 });
 
 // Update user details (username, email, password) based on id
@@ -86,7 +92,7 @@ app.patch('/users/:id', function(req, res){
     const hash = bcrypt.hashSync(req.body.password);
     User.findById(id, function(err, user){
         // CHECK THE LINE BELOW: is "userId" ok?
-        if(user['user_id'] == req.body.userId){
+        if(user['user.id'] == req.body.userId){
             const newUser = {
                 username: req.body.username,
                 email: req.body.email,
@@ -102,5 +108,5 @@ app.patch('/users/:id', function(req, res){
 });
 
 app.listen(port, () => {
-    console.log(`application is running on port ${port}`)
+    console.log(`application is running on port ${port}`);
 });
