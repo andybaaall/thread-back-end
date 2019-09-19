@@ -12,4 +12,4 @@ const Schema = mongoose.Schema;
     bought: Boolean
   });
 
-  module.exports = mongoose.model('Items', userSchema);
+  module.exports = mongoose.model('Items', itemSchema);

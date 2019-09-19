@@ -9,6 +9,7 @@ const bcrypt = require('bcryptjs');
 const multer = require('multer');
 
 const User = require('./models/users');
+const Item = require('./models/items');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:false}));
@@ -31,6 +32,21 @@ app.get('/', function(req, res){
     res.send('Welcome to our Products API. Use endpoints to filter out the data');
 });
 
+app.post('/items', function(req,res){
+  console.log('working');
+    const item = new Item({
+      _id: new mongoose.Types.ObjectId(),
+      item_name: req.body.itemName,
+      clothing_type: req.body.clothingType,
+      image_URL: String,
+      price: req.body.price,
+      condition: req.body.condition
+    });
+    item.save().then(result=>{
+      res.send(result)
+    }).catch(err => res.send(err))
+});
+
 app.post('/users',function(req,res){
   User.findOne({username:req.body.username}, function(err,result){
     if (result) {
@@ -48,7 +64,6 @@ app.post('/users',function(req,res){
       }).catch(err => res.send(err))
     }
   })
-
 })
 
 app.post('/getUser', function(req,res){
