@@ -72,7 +72,7 @@ app.post('/getUser', function(req,res){
              if(bcrypt.compareSync(req.body.password, getUser.password)){
                  res.send(getUser);
              } else {
-                 console.log('incorrect password');
+                 console.log('invalid password');
              }
         } else {
             res.send('user does not exist');
