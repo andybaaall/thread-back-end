@@ -63,14 +63,8 @@ app.post('/users',function(req,res){
         res.send(result);
       }).catch(err => res.send(err));
     }
-<<<<<<< HEAD
-  })
-})
-=======
   });
-
 });
->>>>>>> ca9ae270743909f17cd9dba0f69d8f6242374d2c
 
 app.post('/getUser', function(req,res){
     User.findOne({username: req.body.username}, function(err, getUser){
