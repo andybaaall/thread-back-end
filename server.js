@@ -23,6 +23,29 @@ db.once('open', function() {
     console.log(`We're connected to MongoDB!`);
 });
 
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, './uploads');
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + '-' + file.originalname);
+  }
+})
+
+const filterFile = (req, file, cb) => {
+    if(file.mimetype === 'image/jpeg' || file.mimetype === 'image/png'){
+        cb(null, true);
+    } else {
+        req.validationError = 'invalid extension';
+        cb(null, false, req.validationError);
+    }
+}
+
+const upload = multer({
+    storage: storage,
+    fileFilter: filterFile
+});
+
 app.use(function(req, res, next){
     console.log(`${req.method} request for ${req.url}`);
     next();
@@ -31,20 +54,26 @@ app.use(function(req, res, next){
 app.get('/', function(req, res){
     res.send('Welcome to our Products API. Use endpoints to filter out the data');
 });
-
-app.post('/items', function(req,res){
-  console.log('working');
+app.post('/items', upload.single(`filePath`), function(req,res){
+  console.log('working now');
     const item = new Item({
       _id: new mongoose.Types.ObjectId(),
       item_name: req.body.itemName,
       clothing_type: req.body.clothingType,
-      image_URL: String,
+      image_URL: req.file.path,
       price: req.body.price,
       condition: req.body.condition
     });
     item.save().then(result=>{
       res.send(result)
     }).catch(err => res.send(err))
+});
+
+app.get('/allItems', function(req, res){
+    console.log('working');
+    Item.find().then(result => {
+        res.send(result);
+    })
 });
 
 app.post('/users',function(req,res){
