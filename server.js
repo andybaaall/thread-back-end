@@ -29,7 +29,7 @@ app.use(function(req, res, next){
 });
 
 app.get('/', function(req, res){
-    res.send('Welcome to our Products API. Use endpoints to filter out the data');
+    res.send('Welcome to our API. Use endpoints to filter out the data');
 });
 //
 // app.post('/items', function(req,res){
@@ -47,6 +47,9 @@ app.get('/', function(req, res){
 //     }).catch(err => res.send(err))
 // });
 
+
+// CREATE A NEW USER
+//////////////////////
 app.post('/users',function(req,res){
   User.findOne({username:req.body.username}, function(err,result){
     if (result) {
@@ -66,6 +69,21 @@ app.post('/users',function(req,res){
   });
 });
 
+// CREATE A NEW ITEM
+//////////////////////
+app.post('addItem', function(req, res){
+    Item.findOne({item_name:req.body.itemName}, function(err,result){
+          if (result) {
+            res.send('item already exists');
+        } else {
+            res.send('received post for new item');
+        }
+    });
+});
+
+
+// VALIDATE A USER
+//////////////////////
 app.post('/getUser', function(req,res){
     User.findOne({username: req.body.username}, function(err, getUser){
         if(getUser){
@@ -81,6 +99,7 @@ app.post('/getUser', function(req,res){
 });
 
 // Update user details (username, email, password) based on id
+////////////////
 app.patch('/users/:id', function(req, res){
     const id = req.params.id;
     const hash = bcrypt.hashSync(req.body.password);
