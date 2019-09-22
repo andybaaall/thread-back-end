@@ -11,6 +11,9 @@ const multer = require('multer');
 const User = require('./models/users');
 const Item = require('./models/items');
 
+// const Story = mongoose.model('Story', storySchema);
+// const Person = mongoose.model('Person', personSchema);
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:false}));
 app.use(cors());
@@ -71,12 +74,30 @@ app.post('/users',function(req,res){
 
 // CREATE A NEW ITEM
 //////////////////////
-app.post('addItem', function(req, res){
+app.post('/addItem', function(req, res){
+    console.log(`got a ${req} req from frontend; sent back ${res}`);
     Item.findOne({item_name:req.body.itemName}, function(err,result){
           if (result) {
             res.send('item already exists');
         } else {
-            res.send('received post for new item');
+
+
+            const item = new Item({
+                item_id:  new mongoose.Types.ObjectId(),
+                item_name: req.body.itemName,
+                item_description: req.body.itemDescription,
+                clothing_type:   req.body.itemType,
+                // image_URL: String,
+                // you need to get Multer working!
+                price: req.body.itemPrice,
+                condition: req.body.itemCondition,
+                user_id: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+                bought: req.body.itemBought
+            });
+            item.save().then(result => {
+              res.send(result);
+            }).catch(err => res.send(err));
+
         }
     });
 });
