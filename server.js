@@ -11,6 +11,9 @@ const multer = require('multer');
 const User = require('./models/users');
 const Item = require('./models/items');
 
+// const Story = mongoose.model('Story', storySchema);
+// const Person = mongoose.model('Person', personSchema);
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:false}));
 app.use(cors());
@@ -52,7 +55,7 @@ app.use(function(req, res, next){
 });
 
 app.get('/', function(req, res){
-    res.send('Welcome to our Products API. Use endpoints to filter out the data');
+    res.send('Welcome to our API. Use endpoints to filter out the data');
 });
 app.post('/items', upload.single(`filePath`), function(req,res){
   console.log('working now');
@@ -76,6 +79,9 @@ app.get('/allItems', function(req, res){
     })
 });
 
+
+// CREATE A NEW USER
+//////////////////////
 app.post('/users',function(req,res){
   User.findOne({username:req.body.username}, function(err,result){
     if (result) {
@@ -95,6 +101,39 @@ app.post('/users',function(req,res){
   });
 });
 
+// CREATE A NEW ITEM
+//////////////////////
+app.post('/addItem', function(req, res){
+    console.log(`got a ${req} req from frontend; sent back ${res}`);
+    Item.findOne({item_name:req.body.itemName}, function(err,result){
+          if (result) {
+            res.send('item already exists');
+        } else {
+
+
+            const item = new Item({
+                item_id:  new mongoose.Types.ObjectId(),
+                item_name: req.body.itemName,
+                item_description: req.body.itemDescription,
+                clothing_type:   req.body.itemType,
+                // image_URL: String,
+                // you need to get Multer working!
+                price: req.body.itemPrice,
+                condition: req.body.itemCondition,
+                user_id: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+                bought: req.body.itemBought
+            });
+            item.save().then(result => {
+              res.send(result);
+            }).catch(err => res.send(err));
+
+        }
+    });
+});
+
+
+// VALIDATE A USER
+//////////////////////
 app.post('/getUser', function(req,res){
     User.findOne({username: req.body.username}, function(err, getUser){
         if(getUser){
@@ -110,6 +149,7 @@ app.post('/getUser', function(req,res){
 });
 
 // Update user details (username, email, password) based on id
+////////////////
 app.patch('/users/:id', function(req, res){
     const id = req.params.id;
     const hash = bcrypt.hashSync(req.body.password);
