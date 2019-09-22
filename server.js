@@ -58,27 +58,21 @@ app.use(function(req, res, next){
 app.get('/', function(req, res){
     res.send('Welcome to our API. Use endpoints to filter out the data');
 });
-app.post('/items', upload.single(`filePath`), function(req,res){
-  console.log('working now');
-    const item = new Item({
-      _id: new mongoose.Types.ObjectId(),
-      item_name: req.body.itemName,
-      clothing_type: req.body.clothingType,
-      image_URL: req.file.path,
-      price: req.body.price,
-      condition: req.body.condition
-    });
-    item.save().then(result=>{
-      res.send(result)
-    }).catch(err => res.send(err))
-});
-
-app.get('/allItems', function(req, res){
-    console.log('working');
-    Item.find().then(result => {
-        res.send(result);
-    })
-});
+//
+// app.post('/items', upload.single(`filePath`), function(req,res){
+//   console.log('working now');
+//     const item = new Item({
+//       _id: new mongoose.Types.ObjectId(),
+//       item_name: req.body.itemName,
+//       clothing_type: req.body.clothingType,
+//       image_URL: req.file.path,
+//       price: req.body.price,
+//       condition: req.body.condition
+//     });
+//     item.save().then(result=>{
+//       res.send(result)
+//     }).catch(err => res.send(err))
+// });
 
 
 // CREATE A NEW USER
@@ -110,8 +104,6 @@ app.post('/addItem', function(req, res){
           // if (result) {
             // res.send('item already exists');
         // } else {
-
-
             const item = new Item({
                 // _id object -has- to be called _id (?)
                 _id:  new mongoose.Types.ObjectId(),
@@ -130,6 +122,15 @@ app.post('/addItem', function(req, res){
 
         // }
     // });
+});
+
+//READ ITEMS
+//////////////////////
+app.get('/allItems', function(req, res){
+    console.log('working');
+    Item.find().then(result => {
+        res.send(result);
+    })
 });
 
 
