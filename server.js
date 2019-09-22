@@ -76,7 +76,7 @@ app.post('/users',function(req,res){
 // CREATE A NEW ITEM
 //////////////////////
 app.post('/addItem', function(req, res){
-    console.log(`got a ${req} req from frontend; sent back ${res}`);
+
     // Item.findOne({item_name:req.body.itemName}, function(err,result){
           // if (result) {
             // res.send('item already exists');
@@ -84,7 +84,7 @@ app.post('/addItem', function(req, res){
 
 
             const item = new Item({
-                // _id object -has- to be called _id (?)
+                // _id object -has- to be called _id
                 _id:  new mongoose.Types.ObjectId(),
                 item_name: req.body.itemName,
                 item_description: req.body.itemDescription,
@@ -93,8 +93,10 @@ app.post('/addItem', function(req, res){
                 // you need to get Multer working!
                 price: req.body.itemPrice,
                 condition: req.body.itemCondition,
+                user_id: req.body.userID,
                 bought: req.body.itemBought
             });
+
             item.save().then(result => {
               res.send(result);
             }).catch(err => res.send(err));
