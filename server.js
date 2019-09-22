@@ -54,8 +54,8 @@ app.use(function(req, res, next){
 app.get('/', function(req, res){
     res.send('Welcome to our Products API. Use endpoints to filter out the data');
 });
-app.post('/items', upload.single(`filePath`), function(req,res){
-  console.log('working now');
+app.post('/add', upload.single(`filePath`), function(req,res){
+  console.log('add item working');
     const item = new Item({
       _id: new mongoose.Types.ObjectId(),
       item_name: req.body.itemName,
@@ -69,7 +69,7 @@ app.post('/items', upload.single(`filePath`), function(req,res){
     }).catch(err => res.send(err))
 });
 
-app.get('/allItems', function(req, res){
+app.get('/view', function(req, res){
     console.log('working');
     Item.find().then(result => {
         res.send(result);
