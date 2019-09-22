@@ -7,6 +7,8 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const bcrypt = require('bcryptjs');
 const multer = require('multer');
+const upload = multer({ dest: 'uploads/' });
+
 
 const Schema = mongoose.Schema;
 const User = require('./models/users');
