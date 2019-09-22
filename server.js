@@ -8,6 +8,7 @@ const bodyParser = require('body-parser');
 const bcrypt = require('bcryptjs');
 const multer = require('multer');
 
+const Schema = mongoose.Schema;
 const User = require('./models/users');
 const Item = require('./models/items');
 
@@ -105,14 +106,15 @@ app.post('/users',function(req,res){
 //////////////////////
 app.post('/addItem', function(req, res){
     console.log(`got a ${req} req from frontend; sent back ${res}`);
-    Item.findOne({item_name:req.body.itemName}, function(err,result){
-          if (result) {
-            res.send('item already exists');
-        } else {
+    // Item.findOne({item_name:req.body.itemName}, function(err,result){
+          // if (result) {
+            // res.send('item already exists');
+        // } else {
 
 
             const item = new Item({
-                item_id:  new mongoose.Types.ObjectId(),
+                // _id object -has- to be called _id (?)
+                _id:  new mongoose.Types.ObjectId(),
                 item_name: req.body.itemName,
                 item_description: req.body.itemDescription,
                 clothing_type:   req.body.itemType,
@@ -120,15 +122,14 @@ app.post('/addItem', function(req, res){
                 // you need to get Multer working!
                 price: req.body.itemPrice,
                 condition: req.body.itemCondition,
-                user_id: [{ type: Schema.Types.ObjectId, ref: 'User' }],
                 bought: req.body.itemBought
             });
             item.save().then(result => {
               res.send(result);
             }).catch(err => res.send(err));
 
-        }
-    });
+        // }
+    // });
 });
 
 
