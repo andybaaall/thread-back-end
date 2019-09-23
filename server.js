@@ -8,15 +8,12 @@ const bodyParser = require('body-parser');
 const bcrypt = require('bcryptjs');
 const multer = require('multer');
 
-<<<<<<< HEAD
-=======
 const Schema = mongoose.Schema;
 const User = require('./models/users');
 const Item = require('./models/items');
 
 // const Story = mongoose.model('Story', storySchema);
 // const Person = mongoose.model('Person', personSchema);
->>>>>>> d2317736026287d232508ef030812a9fd3ba7d06
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:false}));
