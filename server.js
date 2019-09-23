@@ -108,19 +108,14 @@ app.post('/users',function(req,res){
 
 // CREATE A NEW ITEM
 //////////////////////
-app.post('/addItem', function(req, res){
-
-    // Item.findOne({item_name:req.body.itemName}, function(err,result){
-          // if (result) {
-            // res.send('item already exists');
-        // } else {
+app.post('/addItem', upload.single('uploadedImage'),function(req, res){
             const item = new Item({
                 // _id object -has- to be called _id
                 _id:  new mongoose.Types.ObjectId(),
                 item_name: req.body.itemName,
                 item_description: req.body.itemDescription,
                 clothing_type:   req.body.itemType,
-                // image_URL: String,
+                image_URL: req.file.path,
                 // you need to get Multer working!
                 price: req.body.itemPrice,
                 condition: req.body.itemCondition,
@@ -130,14 +125,11 @@ app.post('/addItem', function(req, res){
             item.save().then(result => {
               res.send(result);
             }).catch(err => res.send(err));
-        // }
-    // });
 });
 
 //READ ITEMS
 //////////////////////
 app.get('/allItems', function(req, res){
-    console.log('working');
     Item.find().then(result => {
         res.send(result);
     })
@@ -147,6 +139,7 @@ app.get('/allItems', function(req, res){
 //////////////////////
 app.post('/addItem/:id', function(req,res){
     const id = req.params.id;
+    console.log('woring now');
     Item.findById(id, function(err, item){
         if (item['user_id'] == req.body.userID) {
             res.send(item);
@@ -156,30 +149,24 @@ app.post('/addItem/:id', function(req,res){
     });
 });
 
-app.patch('/editItem/:id', function(req,res){
-   const id = req.params.id;
-   console.log('working');
-   Item.findById(id, function(err,item){
-     console.log(id);
-      if (item['user_id'] == req.body.userID) {
-        const newItem = {
-          item_name: req.body.itemName,
-          item_description: req.body.itemDescription,
-          clothing_type:   req.body.itemType,
-          // image_URL: String,
-          // you need to get Multer working!
-          price: req.body.itemPrice,
-          condition: req.body.itemCondition,
-          user_id: req.body.userID,
-          bought: req.body.itemBought
+app.patch('/addItem/:id', function(req,res){
+    const id = req.params.id;
+    console.log(id);
+});
+
+//Delete ITEMS
+//////////////////////
+app.delete('/additme/:id', function(req, res){
+    const id = req.params.id;
+    Item.findById(id, function(err, product){
+        if(item['user_id'] == req.body.userId){
+            Item.deleteOne({ _id: id }, function (err) {
+                res.send('deleted');
+            });
+        } else {
+            res.send('401');
         }
-        Item.updateOne({_id: id}, newItem).then(result =>{
-          res.send(result);
-        }).catch(err => res.send(err));
-      } else {
-        res.send('401');
-      }
-   }).catch(err=> res.send('cannot find Item with that id'));
+    }).catch(err => res.send('cannot find product with that id'));
 });
 
 
