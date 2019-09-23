@@ -56,7 +56,6 @@ app.use(function(req, res, next){
 });
 
 app.get('/', function(req, res){
-<<<<<<< HEAD
     res.send('Welcome to our Products API. Use endpoints to filter out the data');
 });
 
@@ -83,10 +82,7 @@ app.get('/view', function(req, res){
     console.log('working');
     Item.find().then(result => {
         res.send(result);
-    })
-=======
-    res.send('Welcome to our API. Use endpoints to filter out the data');
->>>>>>> master
+    });
 });
 
 // CREATE A NEW USER
