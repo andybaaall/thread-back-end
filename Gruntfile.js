@@ -2,15 +2,16 @@ module.exports = function(grunt){
     grunt.initConfig({
         // pass in options to plugins, references to files
         jshint: {
-              files: ['js/*.js'],
+              files: ['*.js'],
               options: {
                 globals: {
                   jQuery: true
-                }
+                },
+                esversion: 6
               }
             },
         watch: {
-            files: ['<%= jshint.files %>'],
+            files: ['*.js'],
             tasks: ['jshint']
         }
     });
@@ -19,5 +20,5 @@ module.exports = function(grunt){
     grunt.loadNpmTasks('grunt-contrib-watch');
     // register tasks
     grunt.registerTask('checkJS', ['jshint']);
-    grunt.registerTask('runWatch', ['watch'])
-}
+    grunt.registerTask('runWatch', ['watch']);
+};
