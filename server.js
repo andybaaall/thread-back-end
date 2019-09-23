@@ -58,22 +58,6 @@ app.use(function(req, res, next){
 app.get('/', function(req, res){
     res.send('Welcome to our API. Use endpoints to filter out the data');
 });
-//
-// app.post('/items', upload.single(`filePath`), function(req,res){
-//   console.log('working now');
-//     const item = new Item({
-//       _id: new mongoose.Types.ObjectId(),
-//       item_name: req.body.itemName,
-//       clothing_type: req.body.clothingType,
-//       image_URL: req.file.path,
-//       price: req.body.price,
-//       condition: req.body.condition
-//     });
-//     item.save().then(result=>{
-//       res.send(result)
-//     }).catch(err => res.send(err))
-// });
-
 
 // CREATE A NEW USER
 //////////////////////
@@ -117,11 +101,9 @@ app.post('/addItem', function(req, res){
                 user_id: req.body.userID,
                 bought: req.body.itemBought
             });
-
             item.save().then(result => {
               res.send(result);
             }).catch(err => res.send(err));
-
         // }
     // });
 });
@@ -133,6 +115,45 @@ app.get('/allItems', function(req, res){
     Item.find().then(result => {
         res.send(result);
     })
+});
+
+//UPDATE Item
+//////////////////////
+app.post('/addItem/:id', function(req,res){
+    const id = req.params.id;
+    Item.findById(id, function(err, item){
+        if (item['user_id'] == req.body.userID) {
+            res.send(item);
+        } else {
+            res.send('401')
+        }
+    });
+});
+
+app.patch('/editItem/:id', function(req,res){
+   const id = req.params.id;
+   console.log('working');
+   Item.findById(id, function(err,item){
+     console.log(id);
+      if (item['user_id'] == req.body.userID) {
+        const newItem = {
+          item_name: req.body.itemName,
+          item_description: req.body.itemDescription,
+          clothing_type:   req.body.itemType,
+          // image_URL: String,
+          // you need to get Multer working!
+          price: req.body.itemPrice,
+          condition: req.body.itemCondition,
+          user_id: req.body.userID,
+          bought: req.body.itemBought
+        }
+        Item.updateOne({_id: id}, newItem).then(result =>{
+          res.send(result);
+        }).catch(err => res.send(err));
+      } else {
+        res.send('401');
+      }
+   }).catch(err=> res.send('cannot find Item with that id'));
 });
 
 
