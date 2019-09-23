@@ -36,7 +36,7 @@ const storage = multer.diskStorage({
   filename: function (req, file, cb) {
     cb(null, Date.now() + '-' + file.originalname);
   }
-})
+});
 
 const filterFile = (req, file, cb) => {
     if(file.mimetype === 'image/jpeg' || file.mimetype === 'image/png'){
@@ -45,12 +45,7 @@ const filterFile = (req, file, cb) => {
         req.validationError = 'invalid extension';
         cb(null, false, req.validationError);
     }
-}
-
-const upload = multer({
-    storage: storage,
-    fileFilter: filterFile
-});
+};
 
 app.use(function(req, res, next){
     console.log(`${req.method} request for ${req.url}`);
@@ -88,7 +83,7 @@ app.get('/allUsers', function(req, res){
     console.log('working');
     User.find().then(result => {
         res.send(result);
-    })
+    });
 });
 
 // VALIDATE A USER
@@ -173,7 +168,7 @@ app.get('/allItems', function(req, res){
     console.log('working');
     Item.find().then(result => {
         res.send(result);
-    })
+    });
 });
 
 //UPDATE AN ITEM
@@ -194,7 +189,7 @@ app.patch('/editItem/:id', function(req,res){
    console.log('working');
    Item.findById(id, function(err,item){
      console.log(id);
-      if (item['user_id'] == req.body.userID) {
+      if (item.user_id == req.body.userID) {
         const newItem = {
           item_name: req.body.itemName,
           item_description: req.body.itemDescription,
@@ -205,7 +200,7 @@ app.patch('/editItem/:id', function(req,res){
           condition: req.body.itemCondition,
           user_id: req.body.userID,
           bought: req.body.itemBought
-        }
+      };
         Item.updateOne({_id: id}, newItem).then(result =>{
           res.send(result);
         }).catch(err => res.send(err));
