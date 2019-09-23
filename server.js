@@ -20,6 +20,8 @@ const Item = require('./models/items');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:false}));
 app.use(cors());
+app.use('/uploads', express.static('uploads'));
+
 
 mongoose.connect(`mongodb+srv://${config.MONGO_USER}:${config.MONGO_PASSWORD}@${config.MONGO_CLUSTER_NAME}.mongodb.net/summative3?retryWrites=true&w=majority`, {useNewUrlParser: true, useUnifiedTopology: true});
 
@@ -77,14 +79,12 @@ app.post('/users',function(req,res){
 
 // CREATE A NEW ITEM
 //////////////////////
-app.post('/addItem', function(req, res){
-
-    // Item.findOne({item_name:req.body.itemName}, function(err,result){
-          // if (result) {
-            // res.send('item already exists');
-        // } else {
-
-
+app.post('/addItem', upload.single('itemImage'), function(req, res){
+  
+    Item.findOne({item_name:req.body.itemName}, function(err,result){
+          if (result) {
+            res.send('item already exists');
+        } else {
             const item = new Item({
                 // _id object -has- to be called _id
                 _id:  new mongoose.Types.ObjectId(),
@@ -103,8 +103,8 @@ app.post('/addItem', function(req, res){
               res.send(result);
             }).catch(err => res.send(err));
 
-        // }
-    // });
+        }
+    });
 });
 
 
