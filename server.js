@@ -232,7 +232,7 @@ app.patch('/addItem/:id', function(req,res){
 
 //Delete ITEMS
 //////////////////////
-app.delete('/additme/:id', function(req, res){
+app.delete('/addItem/:id', function(req, res){
     const id = req.params.id;
     Item.findById(id, function(err, product){
         if(item['user_id'] == req.body.userId){
