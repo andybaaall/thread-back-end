@@ -193,7 +193,6 @@ app.get('/allItems', function(req, res){
 //////////////////////
 app.post('/addItem/:id', function(req,res){
     const id = req.params.id;
-    console.log('woring now');
     Item.findById(id, function(err, item){
         if (item['user_id'] == req.body.userID) {
             res.send(item);
@@ -227,14 +226,16 @@ app.patch('/addItem/:id', function(req,res){
          res.send('401');
        }
     }).catch(err=> res.send('cannot find Item with that id'));
-
 });
 
-//Delete ITEMS
+
+// DELETE AN ITEM
 //////////////////////
-app.delete('/additme/:id', function(req, res){
+app.delete('/addItem/:id', function(req, res){
     const id = req.params.id;
-    Item.findById(id, function(err, product){
+    console.log(id);
+    Item.findById(id, function(err, item){
+        console.log('working delete');
         if(item['user_id'] == req.body.userId){
             Item.deleteOne({ _id: id }, function (err) {
                 res.send('deleted');
@@ -244,11 +245,6 @@ app.delete('/additme/:id', function(req, res){
         }
     }).catch(err => res.send('cannot find product with that id'));
 });
-
-
-
-// DELETE AN ITEM
-//////////////////////
 
 
 // CREATE A COMMENT
