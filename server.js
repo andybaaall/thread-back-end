@@ -58,7 +58,7 @@ app.get('/', function(req, res){
 
 app.post('/add',function(req,res){
   console.log('working add request');
-})
+});
 
 app.post('/item', upload.single(`filePath`), function(req,res){
   console.log('add item working');
@@ -71,8 +71,8 @@ app.post('/item', upload.single(`filePath`), function(req,res){
       condition: req.body.condition
     });
     item.save().then(result=>{
-      res.send(result)
-    }).catch(err => res.send(err))
+      res.send(result);
+    }).catch(err => res.send(err));
 });
 
 app.get('/view', function(req, res){
@@ -195,10 +195,10 @@ app.post('/addItem/:id', function(req,res){
     const id = req.params.id;
     console.log('woring now');
     Item.findById(id, function(err, item){
-        if (item['user_id'] == req.body.userID) {
+        if (item.user_id == req.body.userID) {
             res.send(item);
         } else {
-            res.send('401')
+            res.send('401');
         }
     });
 });
@@ -208,7 +208,7 @@ app.patch('/addItem/:id', function(req,res){
     console.log(id);
     Item.findById(id, function(err,item){
       console.log('running update');
-       if (item['user_id'] == req.body.userID) {
+       if (item.user_id == req.body.userID) {
          const newItem = {
            item_name: req.body.itemName,
            item_description: req.body.itemDescription,
@@ -219,7 +219,7 @@ app.patch('/addItem/:id', function(req,res){
            condition: req.body.itemCondition,
            user_id: req.body.userID,
            bought: req.body.itemBought
-         }
+         };
          Item.updateOne({_id: id}, newItem).then(result =>{
            res.send(result);
          }).catch(err => res.send(err));
@@ -235,7 +235,7 @@ app.patch('/addItem/:id', function(req,res){
 app.delete('/additme/:id', function(req, res){
     const id = req.params.id;
     Item.findById(id, function(err, product){
-        if(item['user_id'] == req.body.userId){
+        if(item.user_id == req.body.userId){
             Item.deleteOne({ _id: id }, function (err) {
                 res.send('deleted');
             });
