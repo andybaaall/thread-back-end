@@ -250,9 +250,10 @@ app.patch('/addItem/:id', function(req,res){
 
 //Delete ITEMS
 //////////////////////
-app.delete('/deleteItem/:id', function(req, res){
+app.delete('/addItem/:id', function(req, res){
     const id = req.params.id;
-    Item.findById(id, function(err, product){
+    console.log(id);
+    Item.findById(id, function(err, item){
         if(item.user_id == req.body.userId){
             Item.deleteOne({ _id: id }, function (err) {
                 res.send('deleted');
