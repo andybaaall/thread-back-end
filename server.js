@@ -28,12 +28,12 @@ db.once('open', function() {
 });
 
 const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, './uploads');
-  },
-  filename: function (req, file, cb) {
-    cb(null, Date.now() + '-' + file.originalname);
-  }
+    destination: function (req, file, cb) {
+        cb(null, './uploads');
+    },
+    filename: function (req, file, cb) {
+        cb(null, Date.now() + '-' + file.originalname);
+    }
 });
 
 const filterFile = (req, file, cb) => {
@@ -91,22 +91,22 @@ app.get('/view', function(req, res){
 // CREATE A NEW USER
 //////////////////////
 app.post('/users',function(req,res){
-  User.findOne({username:req.body.username}, function(err,result){
-    if (result) {
-      res.send('Invalid user');
-    } else {
-      const hash = bcrypt.hashSync(req.body.password);
-      const user = new User({
-        _id: new mongoose.Types.ObjectId(),
-        username: req.body.username,
-        email: req.body.email,
-        password: hash
-      });
-      user.save().then(result => {
-        res.send(result);
-      }).catch(err => res.send(err));
-    }
-  });
+    User.findOne({username:req.body.username}, function(err,result){
+        if (result) {
+            res.send('Invalid user');
+        } else {
+            const hash = bcrypt.hashSync(req.body.password);
+            const user = new User({
+                _id: new mongoose.Types.ObjectId(),
+                username: req.body.username,
+                email: req.body.email,
+                password: hash
+            });
+            user.save().then(result => {
+                res.send(result);
+            }).catch(err => res.send(err));
+        }
+    });
 });
 
 //READ ALL USERS
@@ -123,11 +123,11 @@ app.get('/allUsers', function(req, res){
 app.post('/getUser', function(req,res){
     User.findOne({username: req.body.username}, function(err, getUser){
         if(getUser){
-             if(bcrypt.compareSync(req.body.password, getUser.password)){
-                 res.send(getUser);
-             } else {
-                 console.log('invalid password');
-             }
+            if(bcrypt.compareSync(req.body.password, getUser.password)){
+                res.send(getUser);
+            } else {
+                console.log('invalid password');
+            }
         } else {
             res.send('user does not exist');
         }
@@ -169,22 +169,22 @@ app.patch('/users/:id', function(req, res){
 // CREATE A NEW ITEM
 //////////////////////
 app.post('/addItem', upload.single('uploadedImage'),function(req, res){
-            const item = new Item({
-                // _id object -has- to be called _id
-                _id:  new mongoose.Types.ObjectId(),
-                item_name: req.body.itemName,
-                item_description: req.body.itemDescription,
-                clothing_type:   req.body.itemType,
-                image_URL: req.file.path,
-                // you need to get Multer working!
-                price: req.body.price,
-                condition: req.body.itemCondition,
-                user_id: req.body.userID,
-                bought: req.body.itemBought
-            });
-            item.save().then(result => {
-              res.send(result);
-            }).catch(err => res.send(err));
+    const item = new Item({
+        // _id object -has- to be called _id
+        _id:  new mongoose.Types.ObjectId(),
+        item_name: req.body.itemName,
+        item_description: req.body.itemDescription,
+        clothing_type:   req.body.itemType,
+        image_URL: req.file.path,
+        // you need to get Multer working!
+        price: req.body.price,
+        condition: req.body.itemCondition,
+        user_id: req.body.userID,
+        bought: req.body.itemBought
+    });
+    item.save().then(result => {
+        res.send(result);
+    }).catch(err => res.send(err));
 });
 
 //READ ALL ITEMS
@@ -201,10 +201,10 @@ app.get('/allItems', function(req, res){
 app.post('/addItem/:id', function(req,res){
     const id = req.params.id;
     Item.findById(id, function(err, item){
-        if (item['user_id'] == req.body.userID) {
+        if (item.user_id == req.body.userID) {
             res.send(item);
         } else {
-            res.send('401')
+            res.send('401');
         }
     });
 });
@@ -213,11 +213,11 @@ app.post('/addItem/:id', function(req,res){
 // UPDATE AN ITEM
 
 app.get('/getItem/:id', function(req, res){
-  // res.send('hello from the single item route');
-  const id = req.params.id;
-  Item.findById(id, function(err, item){
-    res.send(item);
-  });
+    // res.send('hello from the single item route');
+    const id = req.params.id;
+    Item.findById(id, function(err, item){
+        res.send(item);
+    });
 });
 
 
@@ -238,25 +238,25 @@ app.patch('/editItem/:id', function(req,res){
     const id = req.params.id;
     console.log(id);
     Item.findById(id, function(err,item){
-      console.log('running update');
-       if (item.user_id == req.body.userID) {
-         const newItem = {
-           item_name: req.body.itemName,
-           item_description: req.body.itemDescription,
-           clothing_type:   req.body.itemType,
-           // image_URL: String,
-           // you need to get Multer working!
-           price: req.body.price,
-           condition: req.body.itemCondition,
-           user_id: req.body.userID,
-           bought: req.body.itemBought
-         };
-         Item.updateOne({_id: id}, newItem).then(result =>{
-           res.send(result);
-         }).catch(err => res.send(err));
-       } else {
-         res.send('401');
-       }
+        console.log('running update');
+        if (item.user_id == req.body.userID) {
+            const newItem = {
+                item_name: req.body.itemName,
+                item_description: req.body.itemDescription,
+                clothing_type:   req.body.itemType,
+                // image_URL: String,
+                // you need to get Multer working!
+                price: req.body.price,
+                condition: req.body.itemCondition,
+                user_id: req.body.userID,
+                bought: req.body.itemBought
+            };
+            Item.updateOne({_id: id}, newItem).then(result =>{
+                res.send(result);
+            }).catch(err => res.send(err));
+        } else {
+            res.send('401');
+        }
     }).catch(err=> res.send('cannot find Item with that id'));
 });
 
@@ -282,11 +282,11 @@ app.delete('/addItem/:id', function(req, res){
 //////////////////////
 app.post('/comment', function(req, res) {
     const comment = new Comment({
-      _id: new mongoose.Types.ObjectId(),
-      comment: req.body.comment
+        _id: new mongoose.Types.ObjectId(),
+        comment: req.body.comment
     });
     comments.save().then(result => {
-      res.send(result);
+        res.send(result);
     }).catch(err => res.send(err));
 });
 
@@ -301,15 +301,16 @@ app.get('/allComments', function(req, res){
 // UPDATE A COMMENT
 //////////////////////
 app.post('/allComments/:id', function(req, res){
-  const id = req.params.id;
-  console.log(id);
-  Comment.findById(id, function(err, comment) {
-    if (comment.user_id == req.body.userID) {
-      res.send(comment)
-    } else {
-      res.send('401')
-    }
-  })
+    const id = req.params.id;
+    console.log(id);
+    Comment.findById(id, function(err, comment) {
+        if (comment.user_id == req.body.userID) {
+            console.log(req.body.userID);
+            res.send(comment);
+        } else {
+            res.send('401');
+        }
+    });
 });
 
 // DELETE A COMMENT
