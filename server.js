@@ -68,7 +68,7 @@ app.post('/addItem', upload.single(`itemImg`), function(req,res){
         image_URL: req.file.path,
         price: req.body.itemPrice,
         condition: req.body.itemCondition,
-        user_id: req.body.userId,
+        user_id: req.body.userID,
         bought: false
     });
 
@@ -142,7 +142,7 @@ app.patch('/users/:id', function(req, res){
     const hash = bcrypt.hashSync(req.body.password);
     User.findById(id, function(err, user){
         // CHECK THE LINE BELOW: Should 'user.id' be 'user_id'? Is "userId" ok?
-        if(user['user.id'] == req.body.userId){
+        if(user['user.id'] == req.body.userID){
             const newUser = {
                 username: req.body.username,
                 email: req.body.email,
@@ -179,7 +179,7 @@ app.post('/addItem', upload.single('uploadedImage'),function(req, res){
                 // you need to get Multer working!
                 price: req.body.price,
                 condition: req.body.itemCondition,
-                user_id: req.body.userId,
+                user_id: req.body.userID,
                 bought: req.body.itemBought
             });
             item.save().then(result => {
@@ -201,7 +201,7 @@ app.get('/allItems', function(req, res){
 app.post('/addItem/:id', function(req,res){
     const id = req.params.id;
     Item.findById(id, function(err, item){
-        if (item['user_id'] == req.body.userId) {
+        if (item['user_id'] == req.body.userID) {
             res.send(item);
         } else {
             res.send('401')
@@ -220,20 +220,6 @@ app.get('/getItem/:id', function(req, res){
   });
 });
 
-
-//////////////////////
-// app.post('/addItem/:id', function(req,res){
-//     const id = req.params.id;
-//     console.log('woring now');
-//     Item.findById(id, function(err, item){
-//         if (item.user_id == req.body.userID) {
-//             res.send(item);
-//         } else {
-//             res.send('401');
-//         }
-//     });
-// });
-
 app.patch('/editItem/:id', function(req,res){
     const id = req.params.id;
     console.log(id);
@@ -248,7 +234,7 @@ app.patch('/editItem/:id', function(req,res){
            // you need to get Multer working!
            price: req.body.price,
            condition: req.body.itemCondition,
-           user_id: req.body.userId,
+           user_id: req.body.userID,
            bought: req.body.itemBought
          };
          Item.updateOne({_id: id}, newItem).then(result =>{
@@ -304,7 +290,7 @@ app.post('/allComments/:id', function(req, res){
   const id = req.params.id;
   console.log(id);
   Comment.findById(id, function(err, comment) {
-    if (comment.user_id == req.body.userId) {
+    if (comment.user_id == req.body.userID) {
       res.send(comment)
     } else {
       res.send('401')
