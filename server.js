@@ -230,7 +230,7 @@ app.patch('/addItem/:id', function(req,res){
 
 });
 
-//Delete ITEMS
+//Delete an ITEMS
 //////////////////////
 app.delete('/additme/:id', function(req, res){
     const id = req.params.id;
@@ -244,8 +244,6 @@ app.delete('/additme/:id', function(req, res){
         }
     }).catch(err => res.send('cannot find product with that id'));
 });
-
-
 
 // DELETE AN ITEM
 //////////////////////
