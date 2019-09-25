@@ -9,10 +9,6 @@ const itemSchema = new Schema({
     image_URL: String,
     price: Number,
     condition: String,
-    // user_id: {
-    // type: mongoose.Schema.Types.ObjectId,
-    // ref: 'User'
-    // },
     user_id: String,
     bought: Boolean
 });
