@@ -195,19 +195,31 @@ app.get('/allItems', function(req, res){
     });
 });
 
-//UPDATE AN ITEM
+
+// READ A SINGLE ITEM
 //////////////////////
-app.post('/addItem/:id', function(req,res){
-    const id = req.params.id;
-    console.log('woring now');
-    Item.findById(id, function(err, item){
-        if (item.user_id == req.body.userID) {
-            res.send(item);
-        } else {
-            res.send('401');
-        }
-    });
-});
+app.get('/getItem/:id', function(req, res){
+  // res.send('hello from the single item route');
+  const id = req.params.id;
+  Item.findById(id, function(err, item){
+    res.send(item);
+  });
+})
+
+
+// UPDATE AN ITEM
+//////////////////////
+// app.post('/addItem/:id', function(req,res){
+//     const id = req.params.id;
+//     console.log('woring now');
+//     Item.findById(id, function(err, item){
+//         if (item.user_id == req.body.userID) {
+//             res.send(item);
+//         } else {
+//             res.send('401');
+//         }
+//     });
+// });
 
 app.patch('/addItem/:id', function(req,res){
     const id = req.params.id;
