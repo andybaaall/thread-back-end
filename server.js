@@ -146,20 +146,20 @@ app.patch('/users/:id', function(req, res){
 
 // CREATE A NEW ITEM
 //////////////////////
-app.post('/addItem', upload.single('uploadedImage'),function(req, res){
-    console.log(req.body);
-    res.send('from post req');
+app.post('/addItem', upload.single('itemImg'),function(req, res){
+
     const item = new Item({
         _id:  new mongoose.Types.ObjectId(),
         item_name: req.body.itemName,
         item_description: req.body.itemDescription,
         clothing_type:   req.body.itemType,
         image_URL: req.file.path,
-        price: req.body.price,
+        price: req.body.itemPrice,
         condition: req.body.itemCondition,
         user_id: req.body.userID,
         bought: req.body.itemBought
     });
+
     item.save().then(result => {
         res.send(req.body);
     }).catch(err => res.send(err));
