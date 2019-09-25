@@ -267,7 +267,7 @@ app.delete('/addItem/:id', function(req, res){
     const id = req.params.id;
     console.log(id);
     Item.findById(id, function(err, item){
-        if(item.user_id == req.body.userId){
+        if(item.user_id == req.body.userID){
             Item.deleteOne({ _id: id }, function (err) {
                 res.send('deleted');
             });
@@ -280,19 +280,53 @@ app.delete('/addItem/:id', function(req, res){
 
 // CREATE A COMMENT
 //////////////////////
-
+app.post('/comment', function(req, res) {
+    const comment = new Comment({
+      _id: new mongoose.Types.ObjectId(),
+      comment: req.body.comment
+    });
+    comments.save().then(result => {
+      res.send(result);
+    }).catch(err => res.send(err));
+});
 
 // READ A COMMENT
 //////////////////////
-
+app.get('/allComments', function(req, res){
+    Comment.find().then(result => {
+        res.send(result);
+    });
+});
 
 // UPDATE A COMMENT
 //////////////////////
-
+app.post('/allComments/:id', function(req, res){
+  const id = req.params.id;
+  console.log(id);
+  Comment.findById(id, function(err, comment) {
+    if (comment.user_id == req.body.userID) {
+      res.send(comment)
+    } else {
+      res.send('401')
+    }
+  })
+});
 
 // DELETE A COMMENT
 //////////////////////
-
+app.delete('/allComments/:id', function(req, res){
+    const id = req.params.id;
+    console.log(id);
+    Comment.findById(id, function(err, comment){
+        if(comment.user_id == req.body.userID){
+            Comment.deleteOne({ _id: id }, function (err) {
+                res.send('deleted');
+            });
+        } else {
+            res.send('401');
+        }
+    }).catch(err => res.send('cannot find comment with that id'));
+});
 
 
 app.listen(port, () => {
