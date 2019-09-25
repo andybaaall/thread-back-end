@@ -177,7 +177,7 @@ app.post('/addItem', upload.single('uploadedImage'),function(req, res){
                 clothing_type:   req.body.itemType,
                 image_URL: req.file.path,
                 // you need to get Multer working!
-                price: req.body.itemPrice,
+                price: req.body.price,
                 condition: req.body.itemCondition,
                 user_id: req.body.userID,
                 bought: req.body.itemBought
