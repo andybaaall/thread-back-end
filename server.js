@@ -138,12 +138,6 @@ app.patch('/users/:id', function(req, res){
 // DELETE A USER
 ////////////////
 
-
-
-
-
-
-
 // CREATE A NEW ITEM
 //////////////////////
 app.post('/addItem', upload.single('uploadedImage'),function(req, res){
@@ -161,7 +155,7 @@ app.post('/addItem', upload.single('uploadedImage'),function(req, res){
         bought: req.body.itemBought
     });
     item.save().then(result => {
-        res.send(req.body);
+        res.send(result);
     }).catch(err => res.send(err));
 });
 
