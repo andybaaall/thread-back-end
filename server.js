@@ -194,29 +194,30 @@ app.get('/getItem/:id', function(req, res){
 });
 
 app.patch('/editItem/:id', function(req,res){
-    const id = req.params.id;
-    console.log(id);
-    Item.findById(id, function(err,item){
-        console.log('running update');
-        if (item.user_id == req.body.userID) {
-            const newItem = {
-                item_name: req.body.itemName,
-                item_description: req.body.itemDescription,
-                clothing_type:   req.body.itemType,
-                // image_URL: String,
-                // you need to get Multer working!
-                price: req.body.price,
-                condition: req.body.itemCondition,
-                user_id: req.body.userID,
-                bought: req.body.itemBought
-            };
-            Item.updateOne({_id: id}, newItem).then(result =>{
-                res.send(result);
-            }).catch(err => res.send(err));
-        } else {
-            res.send('401');
-        }
-    }).catch(err=> res.send('cannot find Item with that id'));
+  res.send('sent from update');
+    // const id = req.params.id;
+    // console.log(id);
+    // Item.findById(id, function(err,item){
+    //     console.log('running update');
+    //     if (item.user_id == req.body.userID) {
+    //         const newItem = {
+    //             item_name: req.body.itemName,
+    //             item_description: req.body.itemDescription,
+    //             clothing_type:   req.body.itemType,
+    //             // image_URL: String,
+    //             // you need to get Multer working!
+    //             price: req.body.price,
+    //             condition: req.body.itemCondition,
+    //             user_id: req.body.userID,
+    //             bought: req.body.itemBought
+    //         };
+    //         Item.updateOne({_id: id}, newItem).then(result =>{
+    //             res.send(result);
+    //         }).catch(err => res.send(err));
+    //     } else {
+    //         res.send('401');
+    //     }
+    // }).catch(err=> res.send('cannot find Item with that id'));
 });
 
 
@@ -240,9 +241,9 @@ app.delete('/addItem/:id', function(req, res){
                             } else {
                                 res.send('image was removed from mongoDB');
                             }
-                        })
+                        });
                     }
-                })
+                });
             } else {
                 res.send('Cannot find image to delete in the server');
             }
