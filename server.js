@@ -7,8 +7,6 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const bcrypt = require('bcryptjs');
 const multer = require('multer');
-const upload = multer({ dest: 'uploads/' });
-
 
 const Schema = mongoose.Schema;
 const User = require('./models/users');
@@ -47,6 +45,11 @@ const filterFile = (req, file, cb) => {
     }
 };
 
+const upload = multer({
+    storage: storage,
+    fileFilter: filterFile
+});
+
 app.use(function(req, res, next){
     console.log(`${req.method} request for ${req.url}`);
     next();
@@ -56,23 +59,26 @@ app.get('/', function(req, res){
     res.send('Welcome to our Products API. Use endpoints to filter out the data');
 });
 
-app.post('/add',function(req,res){
-  console.log('working add request');
-});
-
-app.post('/item', upload.single(`filePath`), function(req,res){
-  console.log('add item working');
+app.post('/addItem', upload.single(`itemImg`), function(req,res){
     const item = new Item({
-      _id: new mongoose.Types.ObjectId(),
-      item_name: req.body.itemName,
-      clothing_type: req.body.clothingType,
-      image_URL: req.file.path,
-      price: req.body.price,
-      condition: req.body.condition
+        _id: new mongoose.Types.ObjectId(),
+        item_name: req.body.itemName,
+        item_description: req.body.itemDescription,
+        clothing_type:   req.body.itemPrice,
+        image_URL: req.file.path,
+        price: req.body.itemPrice,
+        condition: req.body.itemCondition,
+        user_id: req.body.userID,
+        bought: false
     });
+
+
+
     item.save().then(result=>{
-      res.send(result);
+        res.send(result);
     }).catch(err => res.send(err));
+
+    // res.send('got a req to upload img');
 });
 
 app.get('/view', function(req, res){
