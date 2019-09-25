@@ -59,28 +59,6 @@ app.get('/', function(req, res){
     res.send('Welcome to our Products API. Use endpoints to filter out the data');
 });
 
-app.post('/addItem', upload.single(`itemImg`), function(req,res){
-    const item = new Item({
-        _id: new mongoose.Types.ObjectId(),
-        item_name: req.body.itemName,
-        item_description: req.body.itemDescription,
-        clothing_type:   req.body.itemPrice,
-        image_URL: req.file.path,
-        price: req.body.itemPrice,
-        condition: req.body.itemCondition,
-        user_id: req.body.userID,
-        bought: false
-    });
-
-
-
-    item.save().then(result=>{
-        res.send(result);
-    }).catch(err => res.send(err));
-
-    // res.send('got a req to upload img');
-});
-
 app.get('/view', function(req, res){
     console.log('working');
     Item.find().then(result => {
@@ -169,21 +147,21 @@ app.patch('/users/:id', function(req, res){
 // CREATE A NEW ITEM
 //////////////////////
 app.post('/addItem', upload.single('uploadedImage'),function(req, res){
+    console.log(req.body);
+    res.send('from post req');
     const item = new Item({
-        // _id object -has- to be called _id
         _id:  new mongoose.Types.ObjectId(),
         item_name: req.body.itemName,
         item_description: req.body.itemDescription,
         clothing_type:   req.body.itemType,
         image_URL: req.file.path,
-        // you need to get Multer working!
         price: req.body.price,
         condition: req.body.itemCondition,
         user_id: req.body.userID,
         bought: req.body.itemBought
     });
     item.save().then(result => {
-        res.send(result);
+        res.send(req.body);
     }).catch(err => res.send(err));
 });
 
