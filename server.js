@@ -7,8 +7,6 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const bcrypt = require('bcryptjs');
 const multer = require('multer');
-const upload = multer({ dest: 'uploads/' });
-
 
 const Schema = mongoose.Schema;
 const User = require('./models/users');
@@ -47,6 +45,11 @@ const filterFile = (req, file, cb) => {
     }
 };
 
+const upload = multer({
+    storage: storage,
+    fileFilter: filterFile
+});
+
 app.use(function(req, res, next){
     console.log(`${req.method} request for ${req.url}`);
     next();
@@ -56,23 +59,26 @@ app.get('/', function(req, res){
     res.send('Welcome to our Products API. Use endpoints to filter out the data');
 });
 
-app.post('/add',function(req,res){
-  console.log('working add request');
-});
-
-app.post('/item', upload.single(`filePath`), function(req,res){
-  console.log('add item working');
+app.post('/addItem', upload.single(`itemImg`), function(req,res){
     const item = new Item({
-      _id: new mongoose.Types.ObjectId(),
-      item_name: req.body.itemName,
-      clothing_type: req.body.clothingType,
-      image_URL: req.file.path,
-      price: req.body.price,
-      condition: req.body.condition
+        _id: new mongoose.Types.ObjectId(),
+        item_name: req.body.itemName,
+        item_description: req.body.itemDescription,
+        clothing_type:   req.body.itemPrice,
+        image_URL: req.file.path,
+        price: req.body.itemPrice,
+        condition: req.body.itemCondition,
+        user_id: req.body.userId,
+        bought: false
     });
+
+
+
     item.save().then(result=>{
-      res.send(result);
+        res.send(result);
     }).catch(err => res.send(err));
+
+    // res.send('got a req to upload img');
 });
 
 app.get('/view', function(req, res){
@@ -171,9 +177,9 @@ app.post('/addItem', upload.single('uploadedImage'),function(req, res){
                 clothing_type:   req.body.itemType,
                 image_URL: req.file.path,
                 // you need to get Multer working!
-                price: req.body.itemPrice,
+                price: req.body.price,
                 condition: req.body.itemCondition,
-                user_id: req.body.userID,
+                user_id: req.body.userId,
                 bought: req.body.itemBought
             });
             item.save().then(result => {
@@ -189,35 +195,60 @@ app.get('/allItems', function(req, res){
     });
 });
 
-//UPDATE AN ITEM
+
+// READ A SINGLE ITEM
 //////////////////////
 app.post('/addItem/:id', function(req,res){
     const id = req.params.id;
-    console.log('woring now');
     Item.findById(id, function(err, item){
-        if (item.user_id == req.body.userID) {
+        if (item['user_id'] == req.body.userId) {
             res.send(item);
         } else {
-            res.send('401');
+            res.send('401')
         }
     });
 });
 
-app.patch('/addItem/:id', function(req,res){
+
+// UPDATE AN ITEM
+
+app.get('/getItem/:id', function(req, res){
+  // res.send('hello from the single item route');
+  const id = req.params.id;
+  Item.findById(id, function(err, item){
+    res.send(item);
+  });
+});
+
+
+//////////////////////
+// app.post('/addItem/:id', function(req,res){
+//     const id = req.params.id;
+//     console.log('woring now');
+//     Item.findById(id, function(err, item){
+//         if (item.user_id == req.body.userID) {
+//             res.send(item);
+//         } else {
+//             res.send('401');
+//         }
+//     });
+// });
+
+app.patch('/editItem/:id', function(req,res){
     const id = req.params.id;
     console.log(id);
     Item.findById(id, function(err,item){
       console.log('running update');
-       if (item.user_id == req.body.userID) {
+       if (item.user_id == req.body.userId) {
          const newItem = {
            item_name: req.body.itemName,
            item_description: req.body.itemDescription,
            clothing_type:   req.body.itemType,
            // image_URL: String,
            // you need to get Multer working!
-           price: req.body.itemPrice,
+           price: req.body.price,
            condition: req.body.itemCondition,
-           user_id: req.body.userID,
+           user_id: req.body.userId,
            bought: req.body.itemBought
          };
          Item.updateOne({_id: id}, newItem).then(result =>{
@@ -227,15 +258,16 @@ app.patch('/addItem/:id', function(req,res){
          res.send('401');
        }
     }).catch(err=> res.send('cannot find Item with that id'));
-
 });
 
-//Delete an ITEMS
+
+// DELETE AN ITEM
 //////////////////////
-app.delete('/additme/:id', function(req, res){
+app.delete('/addItem/:id', function(req, res){
     const id = req.params.id;
-    Item.findById(id, function(err, product){
-        if(item.user_id == req.body.userId){
+    console.log(id);
+    Item.findById(id, function(err, item){
+        if(item.user_id == req.body.userID){
             Item.deleteOne({ _id: id }, function (err) {
                 res.send('deleted');
             });
@@ -245,25 +277,56 @@ app.delete('/additme/:id', function(req, res){
     }).catch(err => res.send('cannot find product with that id'));
 });
 
-// DELETE AN ITEM
-//////////////////////
-
 
 // CREATE A COMMENT
 //////////////////////
-
+app.post('/comment', function(req, res) {
+    const comment = new Comment({
+      _id: new mongoose.Types.ObjectId(),
+      comment: req.body.comment
+    });
+    comments.save().then(result => {
+      res.send(result);
+    }).catch(err => res.send(err));
+});
 
 // READ A COMMENT
 //////////////////////
-
+app.get('/allComments', function(req, res){
+    Comment.find().then(result => {
+        res.send(result);
+    });
+});
 
 // UPDATE A COMMENT
 //////////////////////
-
+app.post('/allComments/:id', function(req, res){
+  const id = req.params.id;
+  console.log(id);
+  Comment.findById(id, function(err, comment) {
+    if (comment.user_id == req.body.userId) {
+      res.send(comment)
+    } else {
+      res.send('401')
+    }
+  })
+});
 
 // DELETE A COMMENT
 //////////////////////
-
+app.delete('/allComments/:id', function(req, res){
+    const id = req.params.id;
+    console.log(id);
+    Comment.findById(id, function(err, comment){
+        if(comment.user_id == req.body.userID){
+            Comment.deleteOne({ _id: id }, function (err) {
+                res.send('deleted');
+            });
+        } else {
+            res.send('401');
+        }
+    }).catch(err => res.send('cannot find comments with that id'));
+});
 
 
 app.listen(port, () => {
