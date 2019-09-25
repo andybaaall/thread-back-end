@@ -204,7 +204,7 @@ app.get('/getItem/:id', function(req, res){
   Item.findById(id, function(err, item){
     res.send(item);
   });
-})
+});
 
 
 // UPDATE AN ITEM
@@ -250,7 +250,7 @@ app.patch('/addItem/:id', function(req,res){
 
 //Delete ITEMS
 //////////////////////
-app.delete('/addItem/:id', function(req, res){
+app.delete('/deleteItem/:id', function(req, res){
     const id = req.params.id;
     Item.findById(id, function(err, product){
         if(item.user_id == req.body.userId){
