@@ -250,6 +250,33 @@ app.delete('/addItem/:id', function(req, res){
     }).catch(err => res.send('cannot find an item with that id'));
 });
 
+// BUY AN ITEM
+//////////////////////
+app.get('/getItem/:id', function(req, res){
+    // res.send('hello from the single item route');
+    const id = req.params.id;
+    Item.findById(id, function(err, item){
+        res.send(item);
+    });
+});
+
+app.patch('/buyItem/:id', function(req,res){
+    res.send('got a request from buy')
+    // const id = req.params.id;
+    // Item.findById(id, function(err,bought){
+    //     console.log('running bought function');
+    //     if (bought.user_id == req.body.userID) {
+    //         const bought = {
+    //             bought: req.body.itemBought
+    //         };
+    //         Item.updateOne({_id: id}, bought).then(result =>{
+    //             res.send(result);
+    //         }).catch(err => res.send(err));
+    //     }
+    // }).catch(err=> res.send('cannot find Item'));
+});
+
+
 app.listen(port, () => {
     console.log(`application is running on port ${port}`);
 });
