@@ -267,7 +267,7 @@ app.delete('/addItem/:id', function(req, res){
     const id = req.params.id;
     console.log(id);
     Item.findById(id, function(err, item){
-        if(item.user_id == req.body.userId){
+        if(item.user_id == req.body.userID){
             Item.deleteOne({ _id: id }, function (err) {
                 res.send('deleted');
             });
