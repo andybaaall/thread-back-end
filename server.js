@@ -208,6 +208,16 @@ app.get('/getItem/:id', function(req, res){
 
 
 // UPDATE AN ITEM
+
+app.get('/getItem/:id', function(req, res){
+  // res.send('hello from the single item route');
+  const id = req.params.id;
+  Item.findById(id, function(err, item){
+    res.send(item);
+  });
+});
+
+
 //////////////////////
 // app.post('/addItem/:id', function(req,res){
 //     const id = req.params.id;
@@ -221,7 +231,7 @@ app.get('/getItem/:id', function(req, res){
 //     });
 // });
 
-app.patch('/addItem/:id', function(req,res){
+app.patch('/editItem/:id', function(req,res){
     const id = req.params.id;
     console.log(id);
     Item.findById(id, function(err,item){
@@ -250,7 +260,7 @@ app.patch('/addItem/:id', function(req,res){
 
 //Delete ITEMS
 //////////////////////
-app.delete('/deleteItem/:id', function(req, res){
+app.delete('/addItem/:id', function(req, res){
     const id = req.params.id;
     Item.findById(id, function(err, product){
         if(item.user_id == req.body.userId){
