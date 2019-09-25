@@ -198,12 +198,15 @@ app.get('/allItems', function(req, res){
 
 // READ A SINGLE ITEM
 //////////////////////
-app.get('/getItem/:id', function(req, res){
-  // res.send('hello from the single item route');
-  const id = req.params.id;
-  Item.findById(id, function(err, item){
-    res.send(item);
-  });
+app.post('/addItem/:id', function(req,res){
+    const id = req.params.id;
+    Item.findById(id, function(err, item){
+        if (item['user_id'] == req.body.userID) {
+            res.send(item);
+        } else {
+            res.send('401')
+        }
+    });
 });
 
 
@@ -255,10 +258,10 @@ app.patch('/editItem/:id', function(req,res){
          res.send('401');
        }
     }).catch(err=> res.send('cannot find Item with that id'));
-
 });
 
-//Delete ITEMS
+
+// DELETE AN ITEM
 //////////////////////
 app.delete('/addItem/:id', function(req, res){
     const id = req.params.id;
@@ -273,11 +276,6 @@ app.delete('/addItem/:id', function(req, res){
         }
     }).catch(err => res.send('cannot find product with that id'));
 });
-
-
-
-// DELETE AN ITEM
-//////////////////////
 
 
 // CREATE A COMMENT
