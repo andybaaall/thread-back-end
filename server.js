@@ -261,21 +261,18 @@ app.get('/getItem/:id', function(req, res){
 });
 
 app.patch('/buyItem/:id', function(req,res){
-    res.send('got a request from buy')
-    // const id = req.params.id;
-    // Item.findById(id, function(err,bought){
-    //     console.log('running bought function');
-    //     if (bought.user_id == req.body.userID) {
-    //         const bought = {
-    //             bought: req.body.itemBought
-    //         };
-    //         Item.updateOne({_id: id}, bought).then(result =>{
-    //             res.send(result);
-    //         }).catch(err => res.send(err));
-    //     }
-    // }).catch(err=> res.send('cannot find Item'));
-});
-
+    const id = req.params.id;
+    console.log(id);
+    Item.findById(id, function(err,item){
+        console.log('running buy function');
+            const soldItem = {
+                bought: req.body.itemBought
+            };
+            Item.updateOne({_id: id}, soldItem).then(result =>{
+                res.send(result);
+            }).catch(err => res.send(err));
+        }).catch(err=> res.send('cannot buy it'));
+    });
 
 app.listen(port, () => {
     console.log(`application is running on port ${port}`);
