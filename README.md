@@ -14,6 +14,7 @@ To install everything needed for this project, you need to have a stable version
 $ git clone https://github.com/alexsophiekim/thread-back-end
 $ cd thread-back-end
 $ npm install
+$ node server
 ```
 You also need to create a **config.json** file and include the following lines with a username, password, and cluster name that you have already set up on mongoDB.  
 ```json
