@@ -262,18 +262,19 @@ app.get('/getItem/:id', function(req, res){
 });
 
 app.patch('/buyItem/:id', function(req,res){
+  console.log('connect to buy now');
     const id = req.params.id;
     console.log(id);
     Item.findById(id, function(err,item){
-        console.log('running buy function');
-            const soldItem = {
-                bought: req.body.itemBought
-            };
-            Item.updateOne({_id: id}, soldItem).then(result =>{
-                res.send(result);
-            }).catch(err => res.send(err));
-        }).catch(err=> res.send('cannot buy it'));
-    });
+      console.log(item);
+      const soldItem = {
+          bought: true
+      };
+      Item.updateOne({_id: id}, soldItem).then(result =>{
+          res.send(result);
+      }).catch(err => res.send(err));
+  }).catch(err=> res.send('cannot buy it'));
+});
 
 app.listen(port, () => {
     console.log(`application is running on port ${port}`);
