@@ -32,9 +32,15 @@ const storage = multer.diskStorage({
     destination: function (req, file, cb) {
         cb(null, './uploads');
     },
-    filename: function (req, file, cb) {
-        cb(null, Date.now() + '-' + file.originalname);
-    }
+    filename: function(req, file, cb) {
+    console.log(file);
+    var filename = file.originalname;
+    filename = filename.replace(/\s/g,'');
+    // const str = file.filename;
+    // str = str.replace(/\s+/g, '');
+    cb(null, Date.now() + '-' + filename);
+  }
+
 });
 
 const filterFile = (req, file, cb) => {
