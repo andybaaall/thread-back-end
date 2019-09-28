@@ -230,7 +230,7 @@ app.patch('/editItem/:id', function(req,res){
 
 // DELETE AN ITEM
 //////////////////////
-app.delete('/addItem/:id', function(req, res){
+app.delete('/delteItem/:id', function(req, res){
     const id = req.params.id;
     // console.log(id);
     Item.findById(id, function(err, item){
