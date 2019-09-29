@@ -280,7 +280,7 @@ app.patch('/buyItem/:id', function(req,res){
       Item.updateOne({_id: id}, soldItem).then(result =>{
           res.send(result);
       }).catch(err => res.send(err));
-  }).catch(err=> res.send('cannot buy it'));
+  }).catch(err=> res.send(`Cannot buy this item.`));
 });
 
 app.listen(port, () => {
