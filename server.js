@@ -158,7 +158,7 @@ app.post('/addItem', upload.single('itemImg'),function(req, res){
         price: req.body.itemPrice,
         condition: req.body.itemCondition,
         user_id: req.body.userID,
-        bought: req.body.itemBought
+        bought: false
     });
 
     item.save().then(result => {
