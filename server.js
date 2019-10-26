@@ -14,11 +14,15 @@ const User = require('./models/users');
 const Item = require('./models/items');
 const Comment = require('./models/comments');
 
+if (!fs.existsSync('./uploads')) {
+    const uploadsDir = './uploads';
+    fs.mkdirSync(uploadsDir);
+}
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:false}));
 app.use(cors());
 app.use('/uploads', express.static('uploads'));
-
 
 mongoose.connect(`mongodb+srv://${config.MONGO_USER}:${config.MONGO_PASSWORD}@${config.MONGO_CLUSTER_NAME}.mongodb.net/summative3?retryWrites=true&w=majority`, {useNewUrlParser: true, useUnifiedTopology: true});
 
